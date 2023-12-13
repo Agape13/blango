@@ -80,6 +80,7 @@ class Dev(Configuration):
         "rest_framework.authtoken",
         "drf_yasg",
         "django_filters",
+        "versatileimagefield",
     ]
 
     MIDDLEWARE = [
@@ -264,8 +265,8 @@ class Dev(Configuration):
         "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     }
 
-
-
+    MEDIA_ROOT = BASE_DIR / "media"
+    MEDIA_URL = "/media/"
 
 
 class Prod(Dev):
