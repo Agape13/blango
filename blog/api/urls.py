@@ -38,4 +38,3 @@ urlpatterns = [
     path("jwt/refresh/", TokenRefreshView.as_view(), name="jwt_refresh"),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
