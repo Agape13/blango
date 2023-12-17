@@ -54,7 +54,8 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        exclude = ["ppoi"]
+        fields = "__all__"
+        #exclude = ["ppoi"]
         readonly = ["modified_at", "created_at"]
 
 

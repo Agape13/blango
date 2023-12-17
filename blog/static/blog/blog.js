@@ -4,7 +4,7 @@ class PostRow extends React.Component {
 
     let thumbnail
 
-    if (post.hero_image.thumbnail) {
+    if (post.hero_image !== undefined && post.hero_image.thumbnail) {
       thumbnail = <img src={post.hero_image.thumbnail}/>
     } else {
       thumbnail = '-'
@@ -25,25 +25,34 @@ class PostRow extends React.Component {
 
 class PostTable extends React.Component {
   state = {
-    dataLoaded: true,
-    data: {
-      results: [
-        {
-          id: 15,
-          tags: [
-            'django', 'react'
-          ],
-          'hero_image': {
-            'thumbnail': '/media/__sized__/hero_images/snake-419043_1920-thumbnail-100x100-70.jpg',
-            'full_size': '/media/hero_images/snake-419043_1920.jpg'
-          },
-          title: 'Test Post',
-          slug: 'test-post',
-          summary: 'A test post, created for Django/React.'
-        }
-      ]
-    }
+    dataLoaded: false,
+    data: null
   }
+
+  componentDidMount () {
+    fetch(this.props.url).then(response => {
+      if (response.status !== 200) {
+        throw new Error('Invalid status from server: ' + response.statusText)
+      }
+
+      return response.json()
+    }).then(data => {
+      console.log("data", data)
+      this.setState({
+        dataLoaded: true,
+        data: data
+      })
+    }).catch(e => {
+      console.error(e)
+      this.setState({
+        dataLoaded: true,
+        data: {
+          results: []
+        }
+      })
+    })
+  }
+
 
   render () {
     let rows
@@ -81,6 +90,9 @@ class PostTable extends React.Component {
 
 const domContainer = document.getElementById('react_root')
 ReactDOM.render(
-  React.createElement(PostTable),
+  React.createElement(
+    PostTable,
+    {url: postListUrl}
+  ),
   domContainer
 )
